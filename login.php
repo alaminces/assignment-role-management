@@ -1,3 +1,48 @@
+<?php 
+
+  $errMsg = "";
+
+  if ( $_SERVER['REQUEST_METHOD']=='POST' ) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    if ( !empty($email) && !empty($password) ) {
+
+      $roles     = [];
+      $usernames = [];
+      $emails    = [];
+      $passwords = [];
+
+      $data = "./data/users.txt";
+      $fp = fopen($data,"r");
+      while($line = fgetcsv($fp)) {
+        $roles[]     = $line[0];
+        $usernames[] = $line[1];
+        $emails[]    = $line[2];
+        $passwords[] = $line[3];
+
+      }
+      fclose($fp);
+
+     $count = count($emails);
+
+     for( $i=0; $i<$count; $i++ ) {
+      if ( $emails[$i] == $email && $passwords[$i] == $password ) {
+        session_start();
+        $_SESSION['login'] = true;
+        $_SESSION['username'] = $usernames[$i];
+        $_SESSION['role'] = $rols[$i];
+        header("Location:index.php");
+      }else {
+        $errMsg = "Invalid Username or Password";
+      }
+     }
+
+      
+      
+    }
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +59,7 @@
       <div class="col-md-3"></div>
       <div class="col-md-6 bg-info p-5">
         <h2 class="text-center">Login System</h2>
-
+        <span class="text-danger"><?php echo $errMsg;?></span>
         <form action="login.php" method="post">
           <div class="mb-3">
             <label for="email" class="form-label">Enter Email</label>
