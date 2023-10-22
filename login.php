@@ -1,5 +1,7 @@
 <?php 
-
+  if ( isset( $_SESSION["login"] ) ) {
+    header("location:index.php");
+  }
   $errMsg = "";
 
   if ( $_SERVER['REQUEST_METHOD']=='POST' ) {
