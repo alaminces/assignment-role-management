@@ -72,6 +72,7 @@
           
           <div class="mt-5">
             <button type="submit" name="register" class="btn btn-primary">Register</button>
+            <a class="btn btn-warning end" href="">Login here</a>
           </div>
 
         </form>

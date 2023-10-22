@@ -1,8 +1,2 @@
 admin,admin123,admin@gmail.com,a123
 manager,manager123,manager@gmail.com,m123
-user,ahmed,ahmed@gmail.com,a123
-user,sakib,sakib@gmail.com,s123
-user,sadf,sakib@gmail.com,asdf
-user,masum,masum@gmail.com,asdf
-user,asdf,masum@gmail.com,asdf
-user,atik,atik@gmail.com,atik123

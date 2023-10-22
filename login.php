@@ -43,7 +43,6 @@
       }
      }
 
-    //  print_r($roles);
       
       
     }
@@ -78,6 +77,9 @@
           </div>
 
           <button type="submit" name="login" class="btn btn-primary">Login</button>
+
+          <a class="btn btn-warning" href="registration.php">Register</a>
+
         </form>
       </div>
     </div>
