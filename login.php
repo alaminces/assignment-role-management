@@ -1,7 +1,9 @@
 <?php 
-  if ( isset( $_SESSION["login"] ) ) {
-    header("location:index.php");
+  session_start();
+  if ( isset($_SESSION['login']) && $_SESSION['login']==true ) {
+    header("Location:index.php");
   }
+
   $errMsg = "";
 
   if ( $_SERVER['REQUEST_METHOD']=='POST' ) {
@@ -33,13 +35,15 @@
         session_start();
         $_SESSION['login'] = true;
         $_SESSION['username'] = $usernames[$i];
-        $_SESSION['role'] = $rols[$i];
+        $_SESSION['role'] = $roles[$i];
+       
         header("Location:index.php");
       }else {
         $errMsg = "Invalid Username or Password";
       }
      }
 
+    //  print_r($roles);
       
       
     }
