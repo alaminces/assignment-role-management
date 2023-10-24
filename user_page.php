@@ -1,12 +1,13 @@
 <?php 
 session_start();
 
+if ($_SESSION['role'] != 'user') {
+  header("Location: index.php");
+}
+
 if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
   header('Location:login.php');
 }
-
-
-
 
 ?>
 
@@ -16,9 +17,9 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login System</title>
+  <title>User Dashboard</title>
   <style>
-    li{font-size: 22px;}
+    .nav .nav-link{font-size: 22px;}
   </style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
@@ -28,21 +29,22 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
   <div class="container mt-5">
     
     
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-       <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="#">|</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout.php">Logout</a>
-      </li>
-    </ul>
-
-
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <h1 class="navbar-brand" style="font-size:38px">User Dashboard</h1>
+        <div class="nav d-flex">
+          <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
+          <a class="nav-link"> | </a>
+          <a class="nav-link" href="logout.php">Logout</a>
+        </div>
+      </div>
+    </nav>
     
-
+    <div class="border p-3 bg-dark text-white">
+      <h2>Username : <?php echo $_SESSION['username'];?></h2>
+      <h2>E-mail : <?php echo  $_SESSION['email'];?></h2>
+      <h2>Role : <?php echo  $_SESSION['role'];?></h2>
+    </div>
     
   </div>
 

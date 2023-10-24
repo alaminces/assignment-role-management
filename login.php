@@ -4,6 +4,28 @@
     header("Location:index.php");
   }
 
+   // When logined or registration page is executed user information will save in users file
+
+   $adminInfo = [
+    'username' => 'Alamin Miah',
+    'email' => 'alamin@gmail.com',
+    'password'=> 12345,
+    'role'=> 'admin'
+  ];
+
+  $file = file_get_contents("./data/users.txt");
+
+  if (empty($file)) {
+    $fp = fopen("./data/users.txt","w");
+    
+    $data = sprintf("%s,%s,%s,%s\n",$adminInfo['role'],$adminInfo['username'],$adminInfo['email'],$adminInfo['password']);
+    fwrite($fp,$data);
+    fclose($fp);
+  }
+
+
+
+
   $errMsg = "";
 
   if ( $_SERVER['REQUEST_METHOD']=='POST' ) {
@@ -35,6 +57,7 @@
         session_start();
         $_SESSION['login'] = true;
         $_SESSION['username'] = $usernames[$i];
+        $_SESSION['email'] = $emails[$i];
         $_SESSION['role'] = $roles[$i];
        
         header("Location:index.php");
@@ -42,9 +65,6 @@
         $errMsg = "Invalid Username or Password";
       }
      }
-
-      
-      
     }
   }
 ?>

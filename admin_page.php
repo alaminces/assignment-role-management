@@ -5,6 +5,32 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
   header('Location:login.php');
 }
 
+if ( $_SESSION['role']!='admin' ){
+  header('location: index.php');
+}
+
+// delete user code 
+
+if (isset($_GET['index'])) {
+  $index =  $_GET['index']-1;
+
+  $data = file('./data/users.txt');
+  
+  unset($data[$index]);
+  
+  $count = count($data);
+
+  if ($count != 0) {
+    $fp = fopen("data/users.txt","w");
+
+    foreach($data as $line) {
+      fwrite($fp,$line);
+    }
+
+    fclose($fp); 
+  }
+  header("Location:index.php");
+}
 
 ?>
 
@@ -14,7 +40,7 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login System</title>
+  <title>Admin Dashboard</title>
   <style>
     li{font-size: 22px;}
   </style>
@@ -24,21 +50,25 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
 
 
   <div class="container mt-5">
-    
-    
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-       <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="#">|</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout.php">Logout</a>
-      </li>
-    </ul>
-
-    <br><br>
+       
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <h1 class="navbar-brand" style="font-size:38px">Admin Dashboard</h1>
+        <div class="nav d-flex">
+          <a class="nav-link" href="create_user.php">Create New</a>
+          <a class="nav-link"> | </a>
+          <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
+          <a class="nav-link"> | </a>
+          <a class="nav-link" href="logout.php">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <div class="border p-3 bg-dark text-white">
+      <h2>Username : <?php echo $_SESSION['username'];?></h2>
+      <h2>E-mail : <?php echo  $_SESSION['email'];?></h2>
+      <h2>Role : <?php echo  $_SESSION['role'];?></h2>
+    </div>
+    <h3 class='mt-4 mb-4'>Display All User Information</h3>
 
     <table class="table table-hover table-bordered table-striped text-center">
       <thead>
@@ -59,18 +89,17 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
     ?>
         <tr>
           <td><?php echo $count < 10 ? 0 . $count : $count;?></td>
-          <td><?php echo $line[1];?></td>
-          <td><?php echo $line[2];?></td>
+          <td><?php echo $line[1] ?? null;?></td>
+          <td><?php echo $line[2] ?? null;?></td>
           <td><?php echo $line[0];?></td>
           <td>
-            <a class="btn btn-warning" onclick="alert('Edit operation is not enabled')" href="">Edit</a>
-            <a class="btn btn-danger" onclick="alert('Delete operation is not enabled')" href="">Delete</a>
+            <a class="btn btn-warning" href="role-mangement.php?<?php echo "edit=$count"; ?>">Edit</a>
+            <a class="btn btn-danger" href='?<?php echo "index=$count"; ?>'>Delete</a>
           </td>
         </tr>
       <?php }  ?>
       </tbody>
     </table>
-
     
   </div>
 
@@ -79,5 +108,3 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
-
-

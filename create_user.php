@@ -1,40 +1,25 @@
 <?php 
+  session_start();
   
-  $userErr = $emailErr = $passErr = "";
-  
-
-  // When logined or registration page is executed user information will save in users file
-
-  $adminInfo = [
-    'username' => 'Alamin Miah',
-    'email' => 'alamin@gmail.com',
-    'password'=> 12345,
-    'role'=> 'admin'
-  ];
-
-  $file = file_get_contents("./data/users.txt");
-
-  if (empty($file)) {
-    $fp = fopen("./data/users.txt","w");
-    
-    $data = sprintf("%s,%s,%s,%s\n",$adminInfo['role'],$adminInfo['username'],$adminInfo['email'],$adminInfo['password']);
-    fwrite($fp,$data);
-    fclose($fp);
+  if ($_SESSION["role"] != "admin") {
+    header("Location:index.php");
   }
+
+  $userErr = $emailErr = $passErr = $roleErr = "";
+  
     
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
     function validation($data) {
       $data = trim($data);
       $data = stripslashes($data);
       $data = htmlspecialchars($data);
       return $data;
     }
-
     $username = validation($_POST['username']);
     $email    = validation($_POST['email']);
     $password = validation($_POST['password']);
+    $role     = validation($_POST['role']) ?? "";
 
     
 
@@ -50,6 +35,10 @@
     }
     if (empty($password)) {
       $passErr = "Password field must not be empty!";
+      $error[] = true;
+    }
+    if (empty($role)) {
+      $roleErr = "Role field must not be empty!";
       $error[] = true;
     }
 
@@ -75,8 +64,8 @@
         if ($found) {
           $errMsg = "Already Email address exists";;
         }else {
-          fwrite($fp,"user,$username,$email,$password\n");
-          $msg = "Registration Successfully";
+          fwrite($fp,"$role,$username,$email,$password\n");
+          $msg = "New User Added Successfully";
         }
         fclose($fp);
 
@@ -93,7 +82,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration System</title>
+  <title>Create New User</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
@@ -101,10 +90,10 @@
     <div class="row">
       <div class="col-md-2"></div>
       <div class="col-md-8 bg-info p-5">
-        <h2 class="text-center">Registration System</h2>
+        <h2 class="text-center">Create New User</h2>
         <span class="text-success"><?php echo $msg ?? ""; ?></span>
         <span class="text-danger"><?php echo $errMsg ?? ""; ?></span>
-        <form action="registration.php" method="post">
+        <form action="" method="post">
           <div class="mb-4 mt-5">
             <input type="text" class="form-control" name="username" placeholder="Enter Username">
             <span class="text-danger"><?php echo $userErr; ?></span>
@@ -119,10 +108,20 @@
             <input type="password" name="password" placeholder="Enter Password" class="form-control" >
             <span class="text-danger"><?php echo $passErr; ?></span>
           </div>
+
+          <div class="mb-4">
+           <select name="role" class="form-control">
+            <option disabled="" selected>Select One Role</option>
+            <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
+            <option value="user">User</option>
+           </select>
+           <span class="text-danger"><?php echo $roleErr; ?></span>
+          </div>
           
           <div class="mt-5">
-            <button type="submit" name="register" class="btn btn-primary">Register</button>
-            <a class="btn btn-warning end" href="login.php">Login here</a>
+            <button type="submit" name="addUser" class="btn btn-primary">Add User</button>
+            <a href="index.php" class="btn btn-dark">Back</a>
           </div>
 
         </form>

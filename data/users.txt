@@ -1,2 +1,3 @@
-admin,admin123,admin@gmail.com,a123
-manager,manager123,manager@gmail.com,m123
+admin,Alamin Miah,alamin@gmail.com,12345
+manager,liton,liton@gmail.com,12345
+user,Masud,masud@gmail.com,12345

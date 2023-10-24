@@ -1,12 +1,13 @@
 <?php 
 session_start();
 
+if ($_SESSION['role'] != 'manager') {
+  header('Location:index.php');
+}
+
 if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
   header('Location:login.php');
 }
-
-
-
 
 ?>
 
@@ -16,7 +17,7 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login System</title>
+  <title>Manager Dashboard</title>
   <style>
     li{font-size: 22px;}
   </style>
@@ -28,20 +29,25 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
   <div class="container mt-5">
     
     
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-       <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="#">|</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout.php">Logout</a>
-      </li>
-    </ul>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <h1 class="navbar-brand" style="font-size:38px">Manager Dashboard</h1>
+        <div class="nav d-flex">
+          <a class="nav-link" href="#">Welcome <?php echo $_SESSION['username'];?></a>
+          <a class="nav-link"> | </a>
+          <a class="nav-link" href="logout.php">Logout</a>
+        </div>
+      </div>
+    </nav>
 
     <br><br>
+    <div class="border p-3 bg-dark text-white">
+      <h2>Username : <?php echo $_SESSION['username'];?></h2>
+      <h2>E-mail : <?php echo  $_SESSION['email'];?></h2>
+      <h2>Role : <?php echo  $_SESSION['role'];?></h2>
+    </div>
 
+    <h3 class="mt-3 mb-4">Display All User Information</h3>
     <table class="table table-hover table-bordered table-striped text-center">
       <thead>
         <tr>
@@ -49,7 +55,6 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
           <th>Username</th>
           <th>E-mail</th>
           <th>Role</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -64,15 +69,10 @@ if ( !isset($_SESSION['login']) && $_SESSION['login']==false ) {
           <td><?php echo $line[1];?></td>
           <td><?php echo $line[2];?></td>
           <td><?php echo $line[0];?></td>
-          <td>
-            <a class="btn btn-warning" onclick="alert('Edit operation is not enabled')" href="">Edit</a>
-          </td>
         </tr>
       <?php }  ?>
       </tbody>
     </table>
-
-    
   </div>
 
 
