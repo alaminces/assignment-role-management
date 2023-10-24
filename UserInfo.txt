@@ -1,0 +1,16 @@
+Admin Info:
+-----------
+Email : alamin@gmail.com
+Password : 12345
+
+
+Manager Info:
+-------------
+Email : liton@gmail.com
+Password: 12345
+
+
+User Info:
+----------
+Email : masud@gmail.com
+Password : 12345
